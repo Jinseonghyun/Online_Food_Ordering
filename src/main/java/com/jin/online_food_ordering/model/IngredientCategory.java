@@ -6,11 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngredientsItem {
+public class IngredientCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,12 +21,10 @@ public class IngredientsItem {
 
     private String name;
 
-    @ManyToOne // 1개의 재료 카테고리 안에 여러개의 재료있다.
-    private IngredientCategory category;
-
     @JsonIgnore
     @ManyToOne
     private Restaurant restaurant;
 
-    private boolean inStoke=true; // 재료가 기본적으로는 있지만 관리자가 품절 상태로 바꿀 수 있다.
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL) // 1개의 재료 카테고리 안에 여러개의 재료가 있다.
+    private List<IngredientsItem> ingredients = new ArrayList<>();
 }
